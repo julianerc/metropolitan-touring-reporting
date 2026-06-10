@@ -498,9 +498,175 @@ table.data-table {
   z-index:3;
 }
 
+
+/* ============ LOGIN SCREEN ============ */
+#login-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, #8fd17a 0%, #4fa36f 45%, #0d5d50 100%);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Poppins', sans-serif;
+}
+/* Decorative blobs like the dashboard header */
+#login-overlay::before {
+  content: '';
+  position: absolute;
+  width: 420px; height: 420px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 50%;
+  top: -80px; right: -80px;
+  pointer-events: none;
+}
+#login-overlay::after {
+  content: '';
+  position: absolute;
+  width: 280px; height: 280px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 50%;
+  bottom: -60px; left: -60px;
+  pointer-events: none;
+}
+#login-box {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 52px 44px 44px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 24px 64px rgba(13, 93, 80, 0.28);
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  border: none;
+  overflow: hidden;
+}
+/* Green top accent bar */
+#login-box::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, #6bb645, #3e9d6f, #0d5d50);
+  border-radius: 20px 20px 0 0;
+}
+#login-box .login-logo-img {
+  width: 180px;
+  height: auto;
+  display: block;
+  margin: 0 auto 4px;
+}
+#login-box .login-tagline {
+  font-family: 'Poppins', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: #aaa;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+#login-box .login-divider {
+  width: 50px;
+  height: 3px;
+  background: linear-gradient(90deg, #6bb645, #0d5d50);
+  border-radius: 2px;
+  margin: 16px auto 44px;
+}
+#login-box input {
+  width: 100%;
+  padding: 13px 16px;
+  border: 1.5px solid #e8e8e8;
+  border-radius: 10px;
+  font-size: 14px;
+  font-family: 'Poppins', sans-serif;
+  margin-bottom: 12px;
+  outline: none;
+  transition: border-color 0.25s, box-shadow 0.25s;
+  color: #4c4a58;
+  background: #fafafa;
+}
+#login-box input:focus {
+  border-color: #6bb645;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(107,182,69,0.12);
+}
+#login-box input::placeholder { color: #bbb; }
+#login-box button {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #6bb645 0%, #3e9d6f 50%, #0d5d50 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  margin-top: 6px;
+  letter-spacing: 0.5px;
+  transition: transform 0.15s, box-shadow 0.15s;
+  box-shadow: 0 4px 16px rgba(13, 93, 80, 0.25);
+}
+#login-box button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(13, 93, 80, 0.35);
+}
+#login-box button:active { transform: translateY(0); }
+#login-error {
+  color: #d46a36;
+  font-size: 12px;
+  font-family: 'Poppins', sans-serif;
+  margin-top: 12px;
+  display: none;
+  background: rgba(212, 106, 54, 0.08);
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+#login-box .login-footer {
+  margin-top: 28px;
+  font-size: 11px;
+  color: #ccc;
+  font-family: 'Poppins', sans-serif;
+}
+
 </style>
 </head>
 <body>
+
+<div id="login-overlay">
+  <div id="login-box">
+    <div class="login-logo">WETU</div>
+    <div class="login-subtitle">Usage Dashboard</div>
+    
+    <input type="text" id="login-user" placeholder="Usuario" autocomplete="username" />
+    <input type="password" id="login-pass" placeholder="Contraseña" autocomplete="current-password" />
+    <button onclick="doLogin()">Ingresar</button>
+    <div id="login-error">Usuario o contraseña incorrectos.</div>
+  </div>
+</div>
+
+<script>
+function doLogin() {
+  var u = document.getElementById('login-user').value.trim();
+  var p = document.getElementById('login-pass').value.trim();
+  if (u === 'metropolitan' && p === 'W3tu#MT26') {
+    document.getElementById('login-overlay').style.display = 'none';
+    sessionStorage.setItem('wetu_auth', '1');
+  } else {
+    document.getElementById('login-error').style.display = 'block';
+  }
+}
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') doLogin();
+});
+window.addEventListener('load', function() {
+  if (sessionStorage.getItem('wetu_auth') === '1') {
+    document.getElementById('login-overlay').style.display = 'none';
+  }
+});
+</script>
+
 
 <!-- ============ HEADER ============ -->
 <header class="header">
@@ -508,7 +674,7 @@ table.data-table {
     <div class="brand-row">
       <div class="wetu-logo">
   <img 
-    src="https://cdn.prod.website-files.com/697152b7169de88ea9d78b43/69715634913a10b9483049b4_Frame%2073.svg" 
+    src="https://raw.githubusercontent.com/julianerc/metropolitan-touring-reporting/main/Primary_withouttagline.jpg" 
     alt="Wetu Logo"
     style="height: 72px; width: auto; display: block; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.15));"
   >
@@ -752,7 +918,7 @@ table.data-table {
 <footer class="footer">
   <div style="margin-bottom:12px;">
     <img 
-      src="https://cdn.prod.website-files.com/697152b7169de88ea9d78b43/69715634913a10b9483049b4_Frame%2073.svg" 
+      src="https://raw.githubusercontent.com/julianerc/metropolitan-touring-reporting/main/Primary_withouttagline.jpg" 
       alt="Wetu Logo"
       style="height: 48px; width: auto; display: block; margin: 0 auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.12));"
     >
