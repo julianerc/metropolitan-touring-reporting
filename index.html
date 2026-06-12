@@ -354,8 +354,13 @@ table.data-table {
   cursor: pointer;
   user-select: none;
   white-space: nowrap;
+  transition: all 0.2s ease;
 }
-.data-table thead th:hover { background: var(--horizon-fog); }
+.data-table thead th:hover { 
+  background: var(--horizon-fog); 
+  color: var(--wetu-green);
+  font-weight: 700;
+}
 .data-table thead th .sort-ind { color: var(--wetu-green); font-size: 10px; margin-left: 4px; }
 .data-table tbody td {
   padding: 10px 14px;
@@ -857,7 +862,7 @@ async function fetchTable(table) {
 }
 
 async function loadAllData() {
-  const [usersList, usersYearly, userMonthly, loginsMonthly, itinsByMonth, itinsByUserYear, itinsBreakdown] = await Promise.all([
+  const [usersList, usersYearly, userMonthly, loginsMonthly, itinsByMonth, itinsByUserYear, itinsBreakdown, profilesData] = await Promise.all([
     fetchTable('users_list'),
     fetchTable('users_yearly'),
     fetchTable('user_monthly'),
@@ -865,10 +870,36 @@ async function loadAllData() {
     fetchTable('itineraries_by_month'),
     fetchTable('itineraries_by_user_year'),
     fetchTable('itineraries_monthly_breakdown'),
+    fetchTable('profiles'),
   ]);
 
   const breakdownKeys = Object.keys(itinsBreakdown[0] || {}).filter(k => k !== 'id' && k !== 'FullName');
   const month_columns = breakdownKeys.map(k => k.replace('ItinsCreated', '').replace(/([A-Za-z]+)(\d+)/, '$1 $2'));
+
+  // Map profiles data from snake_case to camelCase
+  const profiles = (profilesData || []).map(p => ({
+    profileName: p.profilename,
+    profileCategory: p.profilecategory,
+    destination: p.destination,
+    country: p.country,
+    status: p.status,
+    profileTier: p.profiletier,
+    imageCount: p.imagecount,
+    contentRating: p.contentrating,
+    itineraryUsage: p.itineraryusage
+  }));
+
+  // Calculate destinations from profiles
+  const destMap = {};
+  profiles.forEach(p => {
+    if (p.destination) {
+      if (!destMap[p.destination]) {
+        destMap[p.destination] = { destination: p.destination, y2024: 0, y2025: 0, y2026: 0, total: 0 };
+      }
+      destMap[p.destination].total += p.itineraryUsage;
+    }
+  });
+  const destinations = Object.values(destMap).sort((a,b) => b.total - a.total);
 
   return {
     users: usersList.map(r => ({ id: r.UserId, username: r.Username, name: r['Full Name'], lastLogin: r['Last Login'] })),
@@ -904,7 +935,8 @@ async function loadAllData() {
       y2025: loginsMonthly.filter(r=>r.YearMonth&&r.YearMonth.startsWith('2025')).reduce((s,r)=>s+(+r.LoginsSessions||0),0),
       y2026: loginsMonthly.filter(r=>r.YearMonth&&r.YearMonth.startsWith('2026')).reduce((s,r)=>s+(+r.LoginsSessions||0),0),
     },
-    destinations: [], profiles: [],
+    destinations: destinations,
+    profiles: profiles,
   };
 };
 
@@ -1199,7 +1231,6 @@ function renderLoginsMonthly() {
 
 function renderTopUsers() {
   destroyChart('top-users');
-  const totalRow = DATA.itineraries_per_user_year.find(r => r.name === 'Total');
   let rows = DATA.itineraries_per_user_year.filter(r => r.name !== 'Total' && !String(r.name).startsWith('Filtros aplicados'));
 
   if (state.year !== 'all') {
@@ -1211,10 +1242,18 @@ function renderTopUsers() {
 
   rows = rows.slice(0, 15);
 
+  // Calculate total based on current year filter
+  let totalValue = 0;
+  if (state.year === 'all') {
+    totalValue = DATA.itineraries_per_user_year.filter(r => r.name !== 'Total' && !String(r.name).startsWith('Filtros aplicados')).reduce((s, r) => s + r.total, 0);
+  } else {
+    const key = 'y' + state.year;
+    totalValue = DATA.itineraries_per_user_year.filter(r => r.name !== 'Total' && !String(r.name).startsWith('Filtros aplicados')).reduce((s, r) => s + (r[key]||0), 0);
+  }
+
   const totalBox = document.getElementById('top-users-total');
-  if (totalBox && totalRow) {
-    const totalValue = state.year === 'all' ? totalRow.total : (totalRow['y' + state.year] || 0);
-    totalBox.innerHTML = `<span>Total itineraries</span><span>${fmt(totalValue)}</span>`;
+  if (totalBox) {
+    totalBox.innerHTML = `<span>Total itineraries${state.year !== 'all' ? ' — ' + state.year : ''}</span><span>${fmt(totalValue)}</span>`;
     totalBox.classList.add('visible');
   }
 
@@ -1395,7 +1434,7 @@ function renderTopDestinations() {
       <div class="top-rank">${i+1}</div>
       <div class="top-info">
         <span class="top-name">${d.destination}</span>
-        <span class="top-sub">'24: ${fmt(d.y2024)} · '25: ${fmt(d.y2025)} · '26: ${fmt(d.y2026)}</span>
+        <span class="top-sub">Total: ${fmt(d.total)}</span>
       </div>
       <div class="top-value">${fmt(d.total)}</div>
     `;
@@ -1403,8 +1442,9 @@ function renderTopDestinations() {
   });
 
   const totalBox = document.getElementById('top-destinations-total');
-  if (totalBox && totalRow) {
-    totalBox.innerHTML = `<span>Total destinations usage</span><span>${fmt(totalRow.total)}</span>`;
+  if (totalBox) {
+    const totalDestUsage = (DATA.destinations||[]).reduce((s,d) => s + (d.total||0), 0);
+    totalBox.innerHTML = `<span>Total destinations usage</span><span>${fmt(totalDestUsage)}</span>`;
     totalBox.classList.add('visible');
   }
 }
@@ -1483,6 +1523,12 @@ document.querySelectorAll('#users-table thead th').forEach(th => {
     th.querySelector('.sort-ind').textContent = userSortDir < 0 ? '▼' : '▲';
     renderUsersTable();
   });
+  // Add default icon to show it's sortable
+  const sortInd = th.querySelector('.sort-ind');
+  if (sortInd && !sortInd.textContent) {
+    sortInd.textContent = '⋮';
+    sortInd.style.opacity = '0.4';
+  }
 });
 document.getElementById('user-search').addEventListener('input', renderUsersTable);
 
@@ -1555,6 +1601,12 @@ document.querySelectorAll('#profiles-table thead th').forEach(th => {
     profPage = 0;
     renderProfilesTable();
   });
+  // Add default icon to show it's sortable
+  const sortInd = th.querySelector('.sort-ind');
+  if (sortInd && !sortInd.textContent) {
+    sortInd.textContent = '⋮';
+    sortInd.style.opacity = '0.4';
+  }
 });
 ['profile-search','profile-cat','profile-country','profile-status','profile-tier'].forEach(id => {
   document.getElementById(id).addEventListener('input', () => { profPage = 0; renderProfilesTable(); });
