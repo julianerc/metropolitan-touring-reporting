@@ -953,20 +953,26 @@ const usernameSel = document.getElementById('filter-username');
 const fromSel = document.getElementById('filter-from');
 const toSel = document.getElementById('filter-to');
 
-DATA.users.sort((a,b) => (a.fullName||'').localeCompare(b.fullName||'')).forEach(u => {
-  if (u.username) {
-    const o = document.createElement('option');
-    o.value = u.username; o.textContent = u.username + ' (' + (u.fullName||'') + ')';
-    usernameSel.appendChild(o);
-  }
-});
+function buildFilterOptions() {
+  // Clear existing options except first
+  while (usernameSel.options.length > 1) usernameSel.remove(1);
+  while (fromSel.options.length > 0) fromSel.remove(0);
+  while (toSel.options.length > 0) toSel.remove(0);
 
-ALL_MONTHS.forEach(m => {
-  const o1 = document.createElement('option'); o1.value=m; o1.textContent=m; fromSel.appendChild(o1);
-  const o2 = document.createElement('option'); o2.value=m; o2.textContent=m; toSel.appendChild(o2);
-});
-fromSel.value = ALL_MONTHS[0];
-toSel.value = ALL_MONTHS[ALL_MONTHS.length-1];
+  (DATA.users||[]).sort((a,b) => (a.name||'').localeCompare(b.name||'')).forEach(u => {
+    if (u.username) {
+      const o = document.createElement('option');
+      o.value = u.username; o.textContent = u.username + ' (' + (u.name||'') + ')';
+      usernameSel.appendChild(o);
+    }
+  });
+
+  ALL_MONTHS.forEach(m => {
+    const o1 = document.createElement('option'); o1.value=m; o1.textContent=m; fromSel.appendChild(o1);
+    const o2 = document.createElement('option'); o2.value=m; o2.textContent=m; toSel.appendChild(o2);
+  });
+  if (fromSel.options.length) { fromSel.value = ALL_MONTHS[0]; toSel.value = ALL_MONTHS[ALL_MONTHS.length-1]; }
+}
 
 // Profile filters
 const profCatSel = document.getElementById('profile-cat');
@@ -1576,6 +1582,9 @@ document.addEventListener('DOMContentLoaded', async function() {
     const el = document.getElementById(id);
     if (el) el.addEventListener('change', refresh);
   });
+
+  // Build filter options with loaded data
+  buildFilterOptions();
 
   // Initial render
   refresh();
