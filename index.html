@@ -675,7 +675,7 @@ window.addEventListener('load', function() {
         <div class="section-eyebrow">Section 02</div>
         <div class="section-title">Monthly Evolution</div>
       </div>
-      <div class="section-note">Full timeline Jan 2024 — 2026</div>
+      <div class="section-note">Full timeline Jan 2024 — Jun 2026</div>
     </div>
     <div class="card" style="margin-bottom:20px">
       <div class="card-title">Itineraries created — month by month</div>
@@ -830,7 +830,7 @@ window.addEventListener('load', function() {
   </div>
 
   <div>
-    Metropolitan Touring · Usage Report · Period Jan 2024 — 2026
+    Metropolitan Touring · Usage Report · Period Jan 2024 — Jun 2026
   </div>
 
   <div style="margin-top:10px; color:#d46a36; font-weight:700; font-family:'Poppins', sans-serif; letter-spacing:0.5px;">
@@ -937,7 +937,7 @@ function durationToHours(s) {
 }
 
 // ====== ALL MONTHS (Jan 2024 - Feb 2026) ======
-const ALL_MONTHS = DATA.month_columns; // ["Jan 2024", ..., "Feb 2026"]
+let ALL_MONTHS = []; // populated after Supabase load
 
 // ====== POPULATE FILTERS ======
 function buildOptions(select, items, labelKey) {
@@ -953,45 +953,28 @@ const usernameSel = document.getElementById('filter-username');
 const fromSel = document.getElementById('filter-from');
 const toSel = document.getElementById('filter-to');
 
-function buildFilterOptions() {
-  // Clear existing options except first
-  while (usernameSel.options.length > 1) usernameSel.remove(1);
-  while (fromSel.options.length > 0) fromSel.remove(0);
-  while (toSel.options.length > 0) toSel.remove(0);
-
-  (DATA.users||[]).sort((a,b) => (a.name||'').localeCompare(b.name||'')).forEach(u => {
-    if (u.username) {
-      const o = document.createElement('option');
-      o.value = u.username; o.textContent = u.username + ' (' + (u.name||'') + ')';
-      usernameSel.appendChild(o);
-    }
-  });
-
-  ALL_MONTHS.forEach(m => {
-    const o1 = document.createElement('option'); o1.value=m; o1.textContent=m; fromSel.appendChild(o1);
-    const o2 = document.createElement('option'); o2.value=m; o2.textContent=m; toSel.appendChild(o2);
-  });
-  if (fromSel.options.length) { fromSel.value = ALL_MONTHS[0]; toSel.value = ALL_MONTHS[ALL_MONTHS.length-1]; }
-}
+// Filter options built in buildFilterOptions() after data loads
 
 // Profile filters
 const profCatSel = document.getElementById('profile-cat');
 const profCountrySel = document.getElementById('profile-country');
 const profTierSel = document.getElementById('profile-tier');
 
-const categories = [...new Set(DATA.profiles.map(p=>p.profileCategory).filter(Boolean))].sort();
-const countries = [...new Set(DATA.profiles.map(p=>p.country).filter(Boolean))].sort();
-const tiers = [...new Set(DATA.profiles.map(p=>p.profileTier).filter(Boolean))].sort();
-categories.forEach(c=>{const o=document.createElement('option'); o.value=c; o.textContent=c; profCatSel.appendChild(o);});
-countries.forEach(c=>{const o=document.createElement('option'); o.value=c; o.textContent=c; profCountrySel.appendChild(o);});
-tiers.forEach(c=>{const o=document.createElement('option'); o.value=c; o.textContent=c; profTierSel.appendChild(o);});
+function buildProfileFilterOptions() {
+  const categories = [...new Set((DATA.profiles||[]).map(p=>p.profileCategory).filter(Boolean))].sort();
+  const countries = [...new Set((DATA.profiles||[]).map(p=>p.country).filter(Boolean))].sort();
+  const tiers = [...new Set((DATA.profiles||[]).map(p=>p.profileTier).filter(Boolean))].sort();
+  categories.forEach(c=>{const o=document.createElement('option'); o.value=c; o.textContent=c; profCatSel.appendChild(o);});
+  countries.forEach(c=>{const o=document.createElement('option'); o.value=c; o.textContent=c; profCountrySel.appendChild(o);});
+  tiers.forEach(c=>{const o=document.createElement('option'); o.value=c; o.textContent=c; profTierSel.appendChild(o);});
+}
 
 // ====== STATE ======
 const state = {
   year: 'all',
   username: 'all',
-  from: ALL_MONTHS[0],
-  to: ALL_MONTHS[ALL_MONTHS.length-1]
+  from: '',
+  to: ''
 };
 
 function readFilters() {
@@ -1004,10 +987,9 @@ function readFilters() {
 function resetFilters() {
   document.getElementById('filter-year').value = 'all';
   usernameSel.value = 'all';
-  fromSel.value = ALL_MONTHS[0];
-  toSel.value = ALL_MONTHS[ALL_MONTHS.length-1];
+  if (ALL_MONTHS.length) { fromSel.value = ALL_MONTHS[0]; toSel.value = ALL_MONTHS[ALL_MONTHS.length-1]; }
   state.year='all'; state.username='all';
-  state.from = ALL_MONTHS[0]; state.to = ALL_MONTHS[ALL_MONTHS.length-1];
+  state.from = ALL_MONTHS[0]||''; state.to = ALL_MONTHS[ALL_MONTHS.length-1]||'';
   refresh();
 }
 
@@ -1022,7 +1004,7 @@ function monthsInRange() {
 
 function selectedUserName() {
   if (state.username !== 'all') {
-    const u = DATA.users.find(u => u.username === state.username);
+    const u = (DATA.users||[]).find(u => u.username === state.username);
     return u ? u.fullName : null;
   }
   return null;
@@ -1057,12 +1039,12 @@ function renderYoYItineraries() {
   const totals = {2024:0, 2025:0, 2026:0};
   const userName = selectedUserName();
   if (userName) {
-    const row = DATA.itineraries_per_user_monthly.find(r => r.name === userName);
+    const row = (DATA.itineraries_per_user_monthly||[]).find(r => r.name === userName);
     if (row) {
       months.forEach(m => { const y=monthYear(m); if (totals[y]!==undefined) totals[y] += row[m] || 0; });
     }
   } else {
-    DATA.itineraries_by_month.forEach(r => {
+    (DATA.itineraries_by_month||[]).forEach(r => {
       const m = r.month + ' ' + r.year;
       // r.month is "January" — convert
       const monthShort = r.month.substring(0,3) + ' ' + r.year;
@@ -1094,11 +1076,11 @@ function renderYoYLogins() {
   const totals = {2024:0, 2025:0, 2026:0};
   const userName = selectedUserName();
   if (userName) {
-    DATA.users_yearly.filter(r => r.name === userName).forEach(r => {
+    (DATA.users_yearly||[]).filter(r => r.name === userName).forEach(r => {
       totals[2024] = r.y2024_sessions; totals[2025] = r.y2025_sessions; totals[2026] = r.y2026_sessions;
     });
   } else {
-    DATA.login_sessions_monthly.forEach(r => {
+    (DATA.login_sessions_monthly||[]).forEach(r => {
       const parts = r.yearMonth.split(' '); // "2024 Jan"
       const y = parseInt(parts[0]); const mo = parts[1];
       const monthShort = mo + ' ' + y;
@@ -1123,14 +1105,14 @@ function renderItinsMonthly() {
   const userName = selectedUserName();
   let values = [];
   if (userName) {
-    const row = DATA.itineraries_per_user_monthly.find(r => r.name === userName);
+    const row = (DATA.itineraries_per_user_monthly||[]).find(r => r.name === userName);
     values = months.map(m => row ? (row[m] || 0) : 0);
   } else {
     values = months.map(m => {
       const parts = m.split(' '); const mShort = parts[0]; const y = parseInt(parts[1]);
       const monthMap = {Jan:'January',Feb:'February',Mar:'March',Apr:'April',May:'May',Jun:'June',Jul:'July',Aug:'August',Sep:'September',Oct:'October',Nov:'November',Dec:'December'};
       const monthLong = monthMap[mShort];
-      const rec = DATA.itineraries_by_month.find(r => r.month === monthLong && r.year === y);
+      const rec = (DATA.itineraries_by_month||[]).find(r => r.month === monthLong && r.year === y);
       return rec ? rec.count : 0;
     });
   }
@@ -1155,7 +1137,7 @@ function renderLoginsMonthly() {
   let values = [];
   if (userName) {
     // No monthly login data per user — show aggregated across years
-    const ud = DATA.users_yearly.find(r => r.name === userName);
+    const(DATA.users_yearly||[]).early.find(r => r.name === userName);
     const totals = {2024: ud?.y2024_sessions||0, 2025: ud?.y2025_sessions||0, 2026: ud?.y2026_sessions||0};
     values = months.map(m => {
       const y = monthYear(m);
@@ -1167,14 +1149,14 @@ function renderLoginsMonthly() {
     values = months.map(m => {
       const parts = m.split(' '); const mo = parts[0]; const y = parseInt(parts[1]);
       const ymKey = y + ' ' + mo;
-      const rec = DATA.login_sessions_monthly.find(r => r.yearMonth === ymKey);
+      const rec = (DATA.login_sessions_monthly||[]).find(r => r.yearMonth === ymKey);
       return rec ? rec.sessions : 0;
     });
   } else {
     values = months.map(m => {
       const parts = m.split(' '); const mo = parts[0]; const y = parseInt(parts[1]);
       const ymKey = y + ' ' + mo;
-      const rec = DATA.login_sessions_monthly.find(r => r.yearMonth === ymKey);
+      const rec = (DATA.login_sessions_monthly||[]).find(r => r.yearMonth === ymKey);
       return rec ? rec.sessions : 0;
     });
   }
@@ -1201,8 +1183,8 @@ function renderLoginsMonthly() {
 
 function renderTopUsers() {
   destroyChart('top-users');
-  const totalRow = DATA.itineraries_per_user_year.find(r => r.name === 'Total');
-  let rows = DATA.itineraries_per_user_year.filter(r => r.name !== 'Total' && !String(r.name).startsWith('Filtros aplicados'));
+  const totalRow = (DATA.itineraries_per_user_year||[]).find(r => r.name === 'Total');
+  let rows = (DATA.itineraries_per_user_year||[]).filter(r => r.name !== 'Total' && !String(r.name).startsWith('Filtros aplicados'));
 
   if (state.year !== 'all') {
     const key = 'y' + state.year;
@@ -1250,7 +1232,7 @@ function renderTopUsers() {
 function renderCategoryChart() {
   destroyChart('cat-usage');
   const agg = {};
-  DATA.profiles.forEach(p => { const c = p.profileCategory || 'Other'; agg[c] = (agg[c]||0) + p.itineraryUsage; });
+  (DATA.profiles||[]).forEach(p => { const c = p.profileCategory || 'Other'; agg[c] = (agg[c]||0) + p.itineraryUsage; });
   const entries = Object.entries(agg).sort((a,b)=>b[1]-a[1]);
   charts['cat-usage'] = new Chart(document.getElementById('chart-cat-usage'), {
     type: 'doughnut',
@@ -1268,7 +1250,7 @@ function renderCategoryChart() {
 function renderStatusChart() {
   destroyChart('status');
   const agg = {};
-  DATA.profiles.forEach(p => { const s = p.status || 'Unknown'; agg[s] = (agg[s]||0) + 1; });
+  (DATA.profiles||[]).forEach(p => { const s = p.status || 'Unknown'; agg[s] = (agg[s]||0) + 1; });
   const entries = Object.entries(agg);
   charts['status'] = new Chart(document.getElementById('chart-status'), {
     type: 'doughnut',
@@ -1287,20 +1269,20 @@ function refreshKPIs() {
 
   let itins = 0;
   if (userName) {
-    const r = DATA.itineraries_per_user_monthly.find(x => x.name === userName);
+    const r = (DATA.itineraries_per_user_monthly||[]).find(x => x.name === userName);
     if (r) months.forEach(m => itins += (r[m]||0));
   } else {
     const monthMap = {Jan:'January',Feb:'February',Mar:'March',Apr:'April',May:'May',Jun:'June',Jul:'July',Aug:'August',Sep:'September',Oct:'October',Nov:'November',Dec:'December'};
     months.forEach(m => {
       const parts = m.split(' '); const mShort = parts[0]; const y = parseInt(parts[1]);
-      const rec = DATA.itineraries_by_month.find(r => r.month === monthMap[mShort] && r.year === y);
+      const rec = (DATA.itineraries_by_month||[]).find(r => r.month === monthMap[mShort] && r.year === y);
       if (rec) itins += rec.count;
     });
   }
 
   let logins = 0;
   if (userName) {
-    const r = DATA.users_yearly.find(x => x.name === userName);
+  (DATA.users_yearly||[]).sers_yearly.find(x => x.name === userName);
     if (r) {
       const years = new Set(months.map(monthYear));
       if (years.has(2024)) logins += r.y2024_sessions || 0;
@@ -1311,14 +1293,13 @@ function refreshKPIs() {
     months.forEach(m => {
       const parts = m.split(' '); const mo = parts[0]; const y = parseInt(parts[1]);
       const ymKey = y + ' ' + mo;
-      const rec = DATA.login_sessions_monthly.find(r => r.yearMonth === ymKey);
+      const rec = (DATA.login_sessions_monthly||[]).find(r => r.yearMonth === ymKey);
       if (rec) logins += rec.sessions;
     });
   }
 
   let totalHours = 0;
-  if (userName) {
-    const r = DATA.users_yearly.find(x => x.name === userName);
+  if (userName(DATA.users_yearly||[]).(DATA.users_yearly||[]).find(x => x.name === userName);
     if (r) {
       const years = new Set(months.map(monthYear));
       if (years.has(2024)) totalHours += durationToHours(r.y2024_duration);
@@ -1327,8 +1308,8 @@ function refreshKPIs() {
     }
   } else {
     // Sum across all users for the years selected
-    const years = new Set(months.map(monthYear));
-    DATA.users_yearly.forEach(r => {
+    const years = new Set(mont(DATA.users_yearly||[]).;
+    (DATA.users_yearly||[]).forEach(r => {
       if (years.has(2024)) totalHours += durationToHours(r.y2024_duration);
       if (years.has(2025)) totalHours += durationToHours(r.y2025_duration);
       if (years.has(2026)) totalHours += durationToHours(r.y2026_duration);
@@ -1341,7 +1322,7 @@ function refreshKPIs() {
     activeUsers = 1;
   } else {
     const counted = new Set();
-    DATA.itineraries_per_user_monthly.forEach(r => {
+    (DATA.itineraries_per_user_monthly||[]).forEach(r => {
       const has = months.some(m => (r[m]||0) > 0);
       if (has) counted.add(r.name);
     });
@@ -1365,7 +1346,7 @@ function refreshKPIs() {
 function renderTopProfiles() {
   const list = document.getElementById('top-profiles-list');
   list.innerHTML = '';
-  const top = [...DATA.profiles].sort((a,b) => b.itineraryUsage - a.itineraryUsage).slice(0, 10);
+  const top = [...(DATA.profiles||[])].sort((a,b) => b.itineraryUsage - a.itineraryUsage).slice(0, 10);
   top.forEach((p, i) => {
     const div = document.createElement('div');
     div.className = 'top-item';
@@ -1385,7 +1366,7 @@ function renderTopProfiles() {
 function renderTopDestinations() {
   const list = document.getElementById('top-destinations-list');
   list.innerHTML = '';
-  const totalRow = DATA.destinations.find(d => d.destination === 'Total');
+  const totalRow = (DATA.destinations||[]).find(d => d.destination === 'Total');
   const top = DATA.destinations
     .filter(d => d.destination && d.destination !== 'Total')
     .sort((a,b) => b.total - a.total)
@@ -1421,8 +1402,8 @@ function renderUsersTable() {
   tbody.innerHTML = '';
   const q = document.getElementById('user-search').value.toLowerCase();
 
-  let rows = DATA.users_yearly.map(r => {
-    const itinsRow = DATA.itineraries_per_user_year.find(x => x.name === r.name);
+  let rows = (DATA.users_yearly||[]).map(r => {
+    const itinsRow = (DATA.itineraries_per_user_year||[]).find(x => x.name === r.name);
     return { ...r, total: itinsRow ? itinsRow.total : 0 };
   }).filter(r => r.name.toLowerCase().includes(q));
 
@@ -1492,7 +1473,7 @@ function filteredProfiles() {
   const country = profCountrySel.value;
   const status = document.getElementById('profile-status').value;
   const tier = profTierSel.value;
-  return DATA.profiles.filter(p => {
+  return (DATA.profiles||[]).filter(p => {
     if (q && !(p.profileName||'').toLowerCase().includes(q)) return false;
     if (cat !== 'all' && p.profileCategory !== cat) return false;
     if (country !== 'all' && p.country !== country) return false;
@@ -1536,7 +1517,7 @@ function renderProfilesTable() {
   document.getElementById('page-info').textContent = `Page ${profPage+1} of ${totalPages}`;
   document.getElementById('prev-page').disabled = profPage === 0;
   document.getElementById('next-page').disabled = profPage >= totalPages - 1;
-  document.getElementById('profiles-summary').textContent = `${fmt(DATA.profiles.length)} profiles used in itineraries`;
+  document.getElementById('profiles-summary').textContent = `${fmt((DATA.profiles||[]).length)} profiles used in itineraries`;
 }
 
 document.querySelectorAll('#profiles-table thead th').forEach(th => {
@@ -1577,16 +1558,17 @@ document.addEventListener('DOMContentLoaded', async function() {
     console.warn('Supabase load failed:', e);
   }
 
-  // Bind filter changes
+  ALL_MONTHS = DATA.month_columns || [];
+  state.from = ALL_MONTHS[0]||'';
+  state.to = ALL_MONTHS[ALL_MONTHS.length-1]||'';
+  buildFilterOptions();
+  buildProfileFilterOptions();
+
   ['filter-year','filter-username','filter-from','filter-to'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.addEventListener('change', refresh);
   });
 
-  // Build filter options with loaded data
-  buildFilterOptions();
-
-  // Initial render
   refresh();
   renderTopProfiles();
   renderTopDestinations();
@@ -1595,11 +1577,6 @@ document.addEventListener('DOMContentLoaded', async function() {
   renderUsersTable();
   renderProfilesTable();
 });
-
-// initial sort indicators
-
-// initial sort indicators
-// dashboard repaired version
 
 </script>
 </body>
