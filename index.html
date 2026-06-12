@@ -499,123 +499,42 @@ table.data-table {
 }
 
 
-/* ============ LOGIN SCREEN ============ */
+/* ── LOGIN ── */
 #login-overlay {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: linear-gradient(135deg, #8fd17a 0%, #4fa36f 45%, #0d5d50 100%);
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Poppins', sans-serif;
-}
-#login-overlay::before {
-  content: '';
-  position: absolute;
-  width: 420px; height: 420px;
-  background: rgba(255,255,255,0.07);
-  border-radius: 50%;
-  top: -80px; right: -80px;
-  pointer-events: none;
-}
-#login-overlay::after {
-  content: '';
-  position: absolute;
-  width: 280px; height: 280px;
-  background: rgba(255,255,255,0.05);
-  border-radius: 50%;
-  bottom: -60px; left: -60px;
-  pointer-events: none;
+  position:fixed; top:0; left:0; right:0; bottom:0;
+  background:linear-gradient(135deg,#8fd17a 0%,#4fa36f 45%,#0d5d50 100%);
+  z-index:9999; display:flex; align-items:center; justify-content:center;
+  font-family:'Poppins',sans-serif;
 }
 #login-box {
-  background: #ffffff;
-  border-radius: 20px;
-  padding: 52px 44px 44px;
-  width: 100%;
-  max-width: 420px;
-  box-shadow: 0 24px 64px rgba(13, 93, 80, 0.28);
-  text-align: center;
-  position: relative;
-  z-index: 1;
-  border: none;
-  overflow: hidden;
+  background:#fff; border-radius:20px; padding:52px 44px 44px;
+  width:100%; max-width:420px;
+  box-shadow:0 24px 64px rgba(13,93,80,0.28);
+  text-align:center; position:relative; overflow:hidden;
 }
 #login-box::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 5px;
-  background: linear-gradient(90deg, #6bb645, #3e9d6f, #0d5d50);
-  border-radius: 20px 20px 0 0;
+  content:''; position:absolute; top:0; left:0; right:0; height:5px;
+  background:linear-gradient(90deg,#6bb645,#3e9d6f,#0d5d50);
 }
-#login-box .login-logo-img {
-  width: 180px;
-  height: auto;
-  display: block;
-  margin: 0 auto 4px;
-}
-#login-box .login-divider {
-  width: 50px;
-  height: 3px;
-  background: linear-gradient(90deg, #6bb645, #0d5d50);
-  border-radius: 2px;
-  margin: 16px auto 44px;
-}
+#login-box .login-logo-img { width:180px; height:auto; display:block; margin:0 auto 4px; }
+#login-box .login-divider { width:50px; height:3px; background:linear-gradient(90deg,#6bb645,#0d5d50); border-radius:2px; margin:16px auto 44px; }
 #login-box input {
-  width: 100%;
-  padding: 13px 16px;
-  border: 1.5px solid #e8e8e8;
-  border-radius: 10px;
-  font-size: 14px;
-  font-family: 'Poppins', sans-serif;
-  margin-bottom: 12px;
-  outline: none;
-  transition: border-color 0.25s, box-shadow 0.25s;
-  color: #4c4a58;
-  background: #fafafa;
-  box-sizing: border-box;
+  width:100%; padding:13px 16px; border:1.5px solid #e8e8e8; border-radius:10px;
+  font-size:14px; font-family:'Poppins',sans-serif; margin-bottom:12px;
+  outline:none; color:#4c4a58; background:#fafafa; box-sizing:border-box;
+  transition:border-color 0.25s,box-shadow 0.25s;
 }
-#login-box input:focus {
-  border-color: #6bb645;
-  background: #fff;
-  box-shadow: 0 0 0 3px rgba(107,182,69,0.12);
-}
-#login-box input::placeholder { color: #bbb; }
+#login-box input:focus { border-color:#6bb645; background:#fff; box-shadow:0 0 0 3px rgba(107,182,69,0.12); }
 #login-box button {
-  width: 100%;
-  padding: 14px;
-  background: linear-gradient(135deg, #6bb645 0%, #3e9d6f 50%, #0d5d50 100%);
-  color: white;
-  border: none;
-  border-radius: 10px;
-  font-size: 14px;
-  font-weight: 600;
-  font-family: 'Poppins', sans-serif;
-  cursor: pointer;
-  margin-top: 6px;
-  letter-spacing: 0.5px;
-  transition: transform 0.15s, box-shadow 0.15s;
-  box-shadow: 0 4px 16px rgba(13, 93, 80, 0.25);
+  width:100%; padding:14px;
+  background:linear-gradient(135deg,#6bb645 0%,#3e9d6f 50%,#0d5d50 100%);
+  color:#fff; border:none; border-radius:10px; font-size:14px; font-weight:600;
+  font-family:'Poppins',sans-serif; cursor:pointer; margin-top:6px;
+  box-shadow:0 4px 16px rgba(13,93,80,0.25); transition:transform 0.15s,box-shadow 0.15s;
 }
-#login-box button:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(13, 93, 80, 0.35); }
-#login-box button:active { transform: translateY(0); }
-#login-error {
-  color: #d46a36;
-  font-size: 12px;
-  font-family: 'Poppins', sans-serif;
-  margin-top: 12px;
-  display: none;
-  background: rgba(212, 106, 54, 0.08);
-  padding: 8px 12px;
-  border-radius: 8px;
-}
-#login-box .login-footer {
-  margin-top: 28px;
-  font-size: 11px;
-  color: #ccc;
-  font-family: 'Poppins', sans-serif;
-}
+#login-box button:hover { transform:translateY(-1px); box-shadow:0 6px 20px rgba(13,93,80,0.35); }
+#login-error { color:#d46a36; font-size:12px; margin-top:12px; display:none; background:rgba(212,106,54,0.08); padding:8px 12px; border-radius:8px; }
+#login-box .login-footer { margin-top:28px; font-size:11px; color:#ccc; font-family:'Poppins',sans-serif; }
 
 </style>
 </head>
@@ -632,23 +551,20 @@ table.data-table {
     <div class="login-footer">© 2026 Wetu · Todos los derechos reservados</div>
   </div>
 </div>
-
 <script>
 function doLogin() {
   var u = document.getElementById('login-user').value.trim();
   var p = document.getElementById('login-pass').value.trim();
   if (u === 'metropolitan' && p === 'W3tu#MT26') {
     document.getElementById('login-overlay').style.display = 'none';
-    sessionStorage.setItem('wetu_auth', '1');
+    sessionStorage.setItem('wetu_auth','1');
   } else {
     document.getElementById('login-error').style.display = 'block';
   }
 }
-document.addEventListener('keydown', function(e) { if (e.key === 'Enter') doLogin(); });
+document.addEventListener('keydown', function(e) { if(e.key==='Enter') doLogin(); });
 window.addEventListener('load', function() {
-  if (sessionStorage.getItem('wetu_auth') === '1') {
-    document.getElementById('login-overlay').style.display = 'none';
-  }
+  if(sessionStorage.getItem('wetu_auth')==='1') document.getElementById('login-overlay').style.display='none';
 });
 </script>
 
@@ -672,7 +588,7 @@ window.addEventListener('load', function() {
     <div class="year-pills">
       <span class="year-pill">2024</span>
       <span class="year-pill">2025</span>
-      <span class="year-pill">Jan 2026</span>
+      <span class="year-pill">2026</span>
     </div>
   </div>
 </header>
@@ -738,7 +654,7 @@ window.addEventListener('load', function() {
         <div class="section-eyebrow">Section 01</div>
         <div class="section-title">Year-over-Year Performance</div>
       </div>
-      <div class="section-note">2024 vs 2025 vs Jan 2026</div>
+      <div class="section-note">2024 vs 2025 vs 2026</div>
     </div>
     <div class="grid-2">
       <div class="card">
@@ -759,7 +675,7 @@ window.addEventListener('load', function() {
         <div class="section-eyebrow">Section 02</div>
         <div class="section-title">Monthly Evolution</div>
       </div>
-      <div class="section-note">Full timeline Jan 2024 — Jan 2026</div>
+      <div class="section-note">Full timeline Jan 2024 — 2026</div>
     </div>
     <div class="card" style="margin-bottom:20px">
       <div class="card-title">Itineraries created — month by month</div>
@@ -914,7 +830,7 @@ window.addEventListener('load', function() {
   </div>
 
   <div>
-    Metropolitan Touring · Usage Report · Period Jan 2024 — Jan 2026
+    Metropolitan Touring · Usage Report · Period Jan 2024 — 2026
   </div>
 
   <div style="margin-top:10px; color:#d46a36; font-weight:700; font-family:'Poppins', sans-serif; letter-spacing:0.5px;">
@@ -925,34 +841,23 @@ window.addEventListener('load', function() {
 <script>
 // ============ DATA EMBEDDED ============
 const DATA = {};
-// ── Supabase Data Loader ─────────────────────────────────────────────────────
 const SUPABASE_URL = 'https://dhqhxccdvftoxyszuvyy.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_OfCGJyRiCXZ3S09lavld9Q_4_CLQOoq';
 
-async function fetchTable(table, select = '*') {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?select=${select}`, {
+async function fetchTable(table) {
+  const res = await fetch(SUPABASE_URL + '/rest/v1/' + table + '?select=*', {
     headers: {
       'apikey': SUPABASE_KEY,
-      'Authorization': `Bearer ${SUPABASE_KEY}`,
-      'Content-Type': 'application/json',
-      'Range': '0-49999',
-      'Prefer': 'count=none'
+      'Authorization': 'Bearer ' + SUPABASE_KEY,
+      'Range': '0-49999'
     }
   });
-  if (!res.ok) throw new Error(`Failed to fetch ${table}: ${res.status}`);
+  if (!res.ok) throw new Error('Failed: ' + table + ' ' + res.status);
   return res.json();
 }
 
 async function loadAllData() {
-  const [
-    usersList,
-    usersYearly,
-    userMonthly,
-    loginsMonthly,
-    itinsByMonth,
-    itinsByUserYear,
-    itinsBreakdown
-  ] = await Promise.all([
+  const [usersList, usersYearly, userMonthly, loginsMonthly, itinsByMonth, itinsByUserYear, itinsBreakdown] = await Promise.all([
     fetchTable('users_list'),
     fetchTable('users_yearly'),
     fetchTable('user_monthly'),
@@ -962,45 +867,32 @@ async function loadAllData() {
     fetchTable('itineraries_monthly_breakdown'),
   ]);
 
-  // Get month columns from breakdown
-  const month_columns = Object.keys(itinsBreakdown[0] || {}).filter(k => 
-    k !== 'id' && k !== 'FullName' && k.startsWith('ItinsCreated')
-  ).map(k => k.replace('ItinsCreated', '').replace(/([A-Za-z]+)(\d+)/, '$1 $2'));
+  const breakdownKeys = Object.keys(itinsBreakdown[0] || {}).filter(k => k !== 'id' && k !== 'FullName');
+  const month_columns = breakdownKeys.map(k => k.replace('ItinsCreated', '').replace(/([A-Za-z]+)(\d+)/, '$1 $2'));
 
   return {
-    users: usersList.map(r => ({
-      id: r.UserId, username: r.Username, name: r['Full Name'], lastLogin: r['Last Login']
-    })),
+    users: usersList.map(r => ({ id: r.UserId, username: r.Username, name: r['Full Name'], lastLogin: r['Last Login'] })),
     users_yearly: usersYearly.map(r => ({
       name: r.FullName,
       y2024: { sessions: +r.LoginSession2024||0, duration: r.LoginDuration2024||'', itins: +r['TotalItinerarie2024']||0 },
       y2025: { sessions: +r.LoginSession2025||0, duration: r.LoginDuration2025||'', itins: +r['TotalItinerarie2025']||0 },
       y2026: { sessions: +r.LoginSession2026||0, duration: r.LoginDuration2026||'', itins: +r['TotalItinerarie2026']||0 },
     })),
-    login_sessions_monthly: loginsMonthly.map(r => ({
-      yearMonth: r.YearMonth, sessions: +r.LoginsSessions||0
-    })),
-    itineraries_by_month: itinsByMonth.map(r => ({
-      month: r.Month, count: +r.ItinsDistinct||0, year: +r.Year||0
-    })),
+    login_sessions_monthly: loginsMonthly.map(r => ({ yearMonth: r.YearMonth, sessions: +r.LoginsSessions||0 })),
+    itineraries_by_month: itinsByMonth.map(r => ({ month: r.Month, count: +r.ItinsDistinct||0, year: +r.Year||0 })),
     itineraries_per_user_year: itinsByUserYear.map(r => ({
       name: r['Full Name'],
-      y2024: +r.ItinsCreated2024||0,
-      y2025: +r.ItinsCreated2025||0,
-      y2026: +r.ItinsCreated2026||0,
+      y2024: +r.ItinsCreated2024||0, y2025: +r.ItinsCreated2025||0, y2026: +r.ItinsCreated2026||0,
       total: (+r.ItinsCreated2024||0) + (+r.ItinsCreated2025||0) + (+r.ItinsCreated2026||0)
     })),
     itineraries_per_user_monthly: itinsBreakdown.map(r => {
       const obj = { name: r.FullName };
-      month_columns.forEach(m => {
-        const key = 'ItinsCreated' + m.replace(' ', '');
-        obj[m] = +r[key]||0;
-      });
-      obj.total = month_columns.reduce((s, m) => s + (+obj[m]||0), 0);
+      month_columns.forEach((m, i) => { obj[m] = +r[breakdownKeys[i]]||0; });
+      obj.total = month_columns.reduce((s, m) => s + (obj[m]||0), 0);
       return obj;
     }),
     month_columns,
-    total_session_time: userMonthly.reduce((sum, r) => sum + (+r.LoginSessionTimeMinutes||0), 0),
+    total_session_time: userMonthly.reduce((s, r) => s + (+r.LoginSessionTimeMinutes||0), 0),
     ytd_change: null,
     total_itineraries_by_year: {
       y2024: itinsByUserYear.reduce((s,r) => s + (+r.ItinsCreated2024||0), 0),
@@ -1012,22 +904,672 @@ async function loadAllData() {
       y2025: loginsMonthly.filter(r=>r.YearMonth&&r.YearMonth.startsWith('2025')).reduce((s,r)=>s+(+r.LoginsSessions||0),0),
       y2026: loginsMonthly.filter(r=>r.YearMonth&&r.YearMonth.startsWith('2026')).reduce((s,r)=>s+(+r.LoginsSessions||0),0),
     },
-    destinations: [],
-    profiles: [],
+    destinations: [], profiles: [],
   };
+};
+
+
+
+// Wetu palette
+const C = {
+  green: '#6bb645',
+  verdant: '#3e9d6f',
+  deep: '#0d5d50',
+  amber: '#d46a36',
+  gold: '#fcd348',
+  ash: '#4c4a58',
+  grey: '#555361',
+  ivory: '#f4f0e6',
+  fog: '#ddeaf5',
+  sky: '#ebe9f1'
+};
+
+const YEAR_COLORS = { 2024: C.green, 2025: C.amber, 2026: C.gold };
+
+// ====== FORMAT HELPERS ======
+const fmt = n => (n ?? 0).toLocaleString('en-US');
+const fmtPct = n => (n*100).toFixed(1) + '%';
+function durationToHours(s) {
+  if (!s) return 0;
+  const m = s.match(/(\d+)h\s*(\d+)m/);
+  if (!m) return 0;
+  return parseInt(m[1]) + parseInt(m[2])/60;
 }
 
-document.addEventListener("DOMContentLoaded", async () => {
-  // Show loading state
-  document.body.style.opacity = '0.5';
-  try {
-    const csvData = await loadAllData();
-    // Inject into global DATA
-    Object.assign(DATA, csvData);
-  } catch(e) {
-    console.warn('CSV load failed, using built-in data:', e);
+// ====== ALL MONTHS (Jan 2024 - Feb 2026) ======
+const ALL_MONTHS = DATA.month_columns; // ["Jan 2024", ..., "Feb 2026"]
+
+// ====== POPULATE FILTERS ======
+function buildOptions(select, items, labelKey) {
+  items.forEach(it => {
+    const opt = document.createElement('option');
+    opt.value = it.value;
+    opt.textContent = it.label;
+    select.appendChild(opt);
+  });
+}
+
+const usernameSel = document.getElementById('filter-username');
+const fromSel = document.getElementById('filter-from');
+const toSel = document.getElementById('filter-to');
+
+DATA.users.sort((a,b) => (a.fullName||'').localeCompare(b.fullName||'')).forEach(u => {
+  if (u.username) {
+    const o = document.createElement('option');
+    o.value = u.username; o.textContent = u.username + ' (' + (u.fullName||'') + ')';
+    usernameSel.appendChild(o);
   }
-  document.body.style.opacity = '1';
+});
+
+ALL_MONTHS.forEach(m => {
+  const o1 = document.createElement('option'); o1.value=m; o1.textContent=m; fromSel.appendChild(o1);
+  const o2 = document.createElement('option'); o2.value=m; o2.textContent=m; toSel.appendChild(o2);
+});
+fromSel.value = ALL_MONTHS[0];
+toSel.value = ALL_MONTHS[ALL_MONTHS.length-1];
+
+// Profile filters
+const profCatSel = document.getElementById('profile-cat');
+const profCountrySel = document.getElementById('profile-country');
+const profTierSel = document.getElementById('profile-tier');
+
+const categories = [...new Set(DATA.profiles.map(p=>p.profileCategory).filter(Boolean))].sort();
+const countries = [...new Set(DATA.profiles.map(p=>p.country).filter(Boolean))].sort();
+const tiers = [...new Set(DATA.profiles.map(p=>p.profileTier).filter(Boolean))].sort();
+categories.forEach(c=>{const o=document.createElement('option'); o.value=c; o.textContent=c; profCatSel.appendChild(o);});
+countries.forEach(c=>{const o=document.createElement('option'); o.value=c; o.textContent=c; profCountrySel.appendChild(o);});
+tiers.forEach(c=>{const o=document.createElement('option'); o.value=c; o.textContent=c; profTierSel.appendChild(o);});
+
+// ====== STATE ======
+const state = {
+  year: 'all',
+  username: 'all',
+  from: ALL_MONTHS[0],
+  to: ALL_MONTHS[ALL_MONTHS.length-1]
+};
+
+function readFilters() {
+  state.year = document.getElementById('filter-year').value;
+  state.username = usernameSel.value;
+  state.from = fromSel.value;
+  state.to = toSel.value;
+}
+
+function resetFilters() {
+  document.getElementById('filter-year').value = 'all';
+  usernameSel.value = 'all';
+  fromSel.value = ALL_MONTHS[0];
+  toSel.value = ALL_MONTHS[ALL_MONTHS.length-1];
+  state.year='all'; state.username='all';
+  state.from = ALL_MONTHS[0]; state.to = ALL_MONTHS[ALL_MONTHS.length-1];
+  refresh();
+}
+
+// Helper — map year-month "Jan 2024" => year number
+function monthYear(m) { return parseInt(m.split(' ')[1]); }
+function monthsInRange() {
+  const fi = ALL_MONTHS.indexOf(state.from);
+  const ti = ALL_MONTHS.indexOf(state.to);
+  if (fi<0||ti<0||fi>ti) return ALL_MONTHS;
+  return ALL_MONTHS.slice(fi, ti+1).filter(m => state.year==='all' || monthYear(m)==parseInt(state.year));
+}
+
+function selectedUserName() {
+  if (state.username !== 'all') {
+    const u = DATA.users.find(u => u.username === state.username);
+    return u ? u.fullName : null;
+  }
+  return null;
+}
+
+// ====== CHARTS ======
+let charts = {};
+function destroyChart(id) { if (charts[id]) { charts[id].destroy(); delete charts[id]; } }
+
+const baseChartOpts = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: { labels: { font: { family: 'Poppins', size: 12 }, color: C.ash } },
+    tooltip: {
+      backgroundColor: C.deep,
+      titleFont: { family: 'Poppins', size: 13 },
+      bodyFont: { family: 'Roboto', size: 12 },
+      padding: 10,
+      cornerRadius: 8
+    }
+  },
+  scales: {
+    x: { ticks: { font: { family: 'Roboto', size: 11 }, color: C.grey }, grid: { display: false } },
+    y: { ticks: { font: { family: 'Roboto', size: 11 }, color: C.grey }, grid: { color: C.sky, drawBorder: false }, beginAtZero: true }
+  }
+};
+
+function renderYoYItineraries() {
+  destroyChart('itins-yoy');
+  const months = monthsInRange();
+  const totals = {2024:0, 2025:0, 2026:0};
+  const userName = selectedUserName();
+  if (userName) {
+    const row = DATA.itineraries_per_user_monthly.find(r => r.name === userName);
+    if (row) {
+      months.forEach(m => { const y=monthYear(m); if (totals[y]!==undefined) totals[y] += row[m] || 0; });
+    }
+  } else {
+    DATA.itineraries_by_month.forEach(r => {
+      const m = r.month + ' ' + r.year;
+      // r.month is "January" — convert
+      const monthShort = r.month.substring(0,3) + ' ' + r.year;
+      if (months.includes(monthShort)) totals[r.year] = (totals[r.year]||0) + r.count;
+    });
+  }
+  const labels = ['2024','2025','2026'];
+  const data = labels.map(l => totals[parseInt(l)] || 0);
+  const ctx = document.getElementById('chart-itins-yoy');
+  charts['itins-yoy'] = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Itineraries',
+        data,
+        backgroundColor: [C.green, C.amber, C.gold],
+        borderRadius: 8,
+        maxBarThickness: 80
+      }]
+    },
+    options: { ...baseChartOpts, plugins: { ...baseChartOpts.plugins, legend: { display: false } } }
+  });
+}
+
+function renderYoYLogins() {
+  destroyChart('logins-yoy');
+  const months = monthsInRange();
+  const totals = {2024:0, 2025:0, 2026:0};
+  const userName = selectedUserName();
+  if (userName) {
+    DATA.users_yearly.filter(r => r.name === userName).forEach(r => {
+      totals[2024] = r.y2024_sessions; totals[2025] = r.y2025_sessions; totals[2026] = r.y2026_sessions;
+    });
+  } else {
+    DATA.login_sessions_monthly.forEach(r => {
+      const parts = r.yearMonth.split(' '); // "2024 Jan"
+      const y = parseInt(parts[0]); const mo = parts[1];
+      const monthShort = mo + ' ' + y;
+      if (months.includes(monthShort)) totals[y] = (totals[y]||0) + r.sessions;
+    });
+  }
+  const labels = ['2024','2025','2026'];
+  const data = labels.map(l => totals[parseInt(l)] || 0);
+  charts['logins-yoy'] = new Chart(document.getElementById('chart-logins-yoy'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{ label:'Sessions', data, backgroundColor:[C.deep, C.verdant, C.green], borderRadius:8, maxBarThickness:80 }]
+    },
+    options: { ...baseChartOpts, plugins: { ...baseChartOpts.plugins, legend: { display: false } } }
+  });
+}
+
+function renderItinsMonthly() {
+  destroyChart('itins-monthly');
+  const months = monthsInRange();
+  const userName = selectedUserName();
+  let values = [];
+  if (userName) {
+    const row = DATA.itineraries_per_user_monthly.find(r => r.name === userName);
+    values = months.map(m => row ? (row[m] || 0) : 0);
+  } else {
+    values = months.map(m => {
+      const parts = m.split(' '); const mShort = parts[0]; const y = parseInt(parts[1]);
+      const monthMap = {Jan:'January',Feb:'February',Mar:'March',Apr:'April',May:'May',Jun:'June',Jul:'July',Aug:'August',Sep:'September',Oct:'October',Nov:'November',Dec:'December'};
+      const monthLong = monthMap[mShort];
+      const rec = DATA.itineraries_by_month.find(r => r.month === monthLong && r.year === y);
+      return rec ? rec.count : 0;
+    });
+  }
+  const colors = months.map(m => {
+    const y = monthYear(m);
+    return YEAR_COLORS[y] || C.green;
+  });
+  charts['itins-monthly'] = new Chart(document.getElementById('chart-itins-monthly'), {
+    type: 'bar',
+    data: {
+      labels: months,
+      datasets: [{ label:'Itineraries', data: values, backgroundColor: colors, borderRadius: 4 }]
+    },
+    options: { ...baseChartOpts, plugins: { ...baseChartOpts.plugins, legend:{display:false} } }
+  });
+}
+
+function renderLoginsMonthly() {
+  destroyChart('logins-monthly');
+  const months = monthsInRange();
+  const userName = selectedUserName();
+  let values = [];
+  if (userName) {
+    // No monthly login data per user — show aggregated across years
+    const ud = DATA.users_yearly.find(r => r.name === userName);
+    const totals = {2024: ud?.y2024_sessions||0, 2025: ud?.y2025_sessions||0, 2026: ud?.y2026_sessions||0};
+    values = months.map(m => {
+      const y = monthYear(m);
+      // distribute equally as rough estimate — but better just show 0 with note
+      return 0;
+    });
+    // Actually, just use the platform-wide for selected user
+    // For now show platform-wide
+    values = months.map(m => {
+      const parts = m.split(' '); const mo = parts[0]; const y = parseInt(parts[1]);
+      const ymKey = y + ' ' + mo;
+      const rec = DATA.login_sessions_monthly.find(r => r.yearMonth === ymKey);
+      return rec ? rec.sessions : 0;
+    });
+  } else {
+    values = months.map(m => {
+      const parts = m.split(' '); const mo = parts[0]; const y = parseInt(parts[1]);
+      const ymKey = y + ' ' + mo;
+      const rec = DATA.login_sessions_monthly.find(r => r.yearMonth === ymKey);
+      return rec ? rec.sessions : 0;
+    });
+  }
+  charts['logins-monthly'] = new Chart(document.getElementById('chart-logins-monthly'), {
+    type: 'line',
+    data: {
+      labels: months,
+      datasets: [{
+        label: 'Login sessions',
+        data: values,
+        borderColor: C.verdant,
+        backgroundColor: 'rgba(62, 157, 111, 0.15)',
+        fill: true,
+        tension: 0.35,
+        pointBackgroundColor: C.green,
+        pointBorderColor: '#fff',
+        pointRadius: 4,
+        pointHoverRadius: 6
+      }]
+    },
+    options: baseChartOpts
+  });
+}
+
+function renderTopUsers() {
+  destroyChart('top-users');
+  const totalRow = DATA.itineraries_per_user_year.find(r => r.name === 'Total');
+  let rows = DATA.itineraries_per_user_year.filter(r => r.name !== 'Total' && !String(r.name).startsWith('Filtros aplicados'));
+
+  if (state.year !== 'all') {
+    const key = 'y' + state.year;
+    rows.sort((a,b) => (b[key]||0) - (a[key]||0));
+  } else {
+    rows.sort((a,b) => b.total - a.total);
+  }
+
+  rows = rows.slice(0, 15);
+
+  const totalBox = document.getElementById('top-users-total');
+  if (totalBox && totalRow) {
+    const totalValue = state.year === 'all' ? totalRow.total : (totalRow['y' + state.year] || 0);
+    totalBox.innerHTML = `<span>Total itineraries</span><span>${fmt(totalValue)}</span>`;
+    totalBox.classList.add('visible');
+  }
+
+  const labels = rows.map(r => r.name);
+  let datasets;
+  if (state.year === 'all') {
+    datasets = [
+      { label: '2024', data: rows.map(r=>r.y2024), backgroundColor: C.green, borderRadius: 4 },
+      { label: '2025', data: rows.map(r=>r.y2025), backgroundColor: C.amber, borderRadius: 4 },
+      { label: '2026', data: rows.map(r=>r.y2026), backgroundColor: C.gold, borderRadius: 4 }
+    ];
+  } else {
+    const key = 'y' + state.year;
+    datasets = [{ label: state.year, data: rows.map(r=>r[key]||0), backgroundColor: YEAR_COLORS[state.year], borderRadius: 4 }];
+  }
+  charts['top-users'] = new Chart(document.getElementById('chart-top-users'), {
+    type: 'bar',
+    data: { labels, datasets },
+    options: {
+      ...baseChartOpts,
+      indexAxis: 'y',
+      scales: {
+        x: { stacked: state.year==='all', ticks: { font: { family: 'Roboto', size: 11 }, color: C.grey } },
+        y: { stacked: state.year==='all', ticks: { font: { family: 'Roboto', size: 11 }, color: C.grey } }
+      }
+    }
+  });
+}
+
+
+function renderCategoryChart() {
+  destroyChart('cat-usage');
+  const agg = {};
+  DATA.profiles.forEach(p => { const c = p.profileCategory || 'Other'; agg[c] = (agg[c]||0) + p.itineraryUsage; });
+  const entries = Object.entries(agg).sort((a,b)=>b[1]-a[1]);
+  charts['cat-usage'] = new Chart(document.getElementById('chart-cat-usage'), {
+    type: 'doughnut',
+    data: {
+      labels: entries.map(e=>e[0]),
+      datasets: [{
+        data: entries.map(e=>e[1]),
+        backgroundColor: [C.green, C.amber, C.deep, C.gold, C.verdant, C.grey, C.fog, C.sky]
+      }]
+    },
+    options: { ...baseChartOpts, scales: {}, cutout: '55%' }
+  });
+}
+
+function renderStatusChart() {
+  destroyChart('status');
+  const agg = {};
+  DATA.profiles.forEach(p => { const s = p.status || 'Unknown'; agg[s] = (agg[s]||0) + 1; });
+  const entries = Object.entries(agg);
+  charts['status'] = new Chart(document.getElementById('chart-status'), {
+    type: 'doughnut',
+    data: {
+      labels: entries.map(e=>e[0]),
+      datasets: [{ data: entries.map(e=>e[1]), backgroundColor: [C.green, C.amber, C.grey] }]
+    },
+    options: { ...baseChartOpts, scales: {}, cutout: '55%' }
+  });
+}
+
+// ====== KPI ======
+function refreshKPIs() {
+  const months = monthsInRange();
+  const userName = selectedUserName();
+
+  let itins = 0;
+  if (userName) {
+    const r = DATA.itineraries_per_user_monthly.find(x => x.name === userName);
+    if (r) months.forEach(m => itins += (r[m]||0));
+  } else {
+    const monthMap = {Jan:'January',Feb:'February',Mar:'March',Apr:'April',May:'May',Jun:'June',Jul:'July',Aug:'August',Sep:'September',Oct:'October',Nov:'November',Dec:'December'};
+    months.forEach(m => {
+      const parts = m.split(' '); const mShort = parts[0]; const y = parseInt(parts[1]);
+      const rec = DATA.itineraries_by_month.find(r => r.month === monthMap[mShort] && r.year === y);
+      if (rec) itins += rec.count;
+    });
+  }
+
+  let logins = 0;
+  if (userName) {
+    const r = DATA.users_yearly.find(x => x.name === userName);
+    if (r) {
+      const years = new Set(months.map(monthYear));
+      if (years.has(2024)) logins += r.y2024_sessions || 0;
+      if (years.has(2025)) logins += r.y2025_sessions || 0;
+      if (years.has(2026)) logins += r.y2026_sessions || 0;
+    }
+  } else {
+    months.forEach(m => {
+      const parts = m.split(' '); const mo = parts[0]; const y = parseInt(parts[1]);
+      const ymKey = y + ' ' + mo;
+      const rec = DATA.login_sessions_monthly.find(r => r.yearMonth === ymKey);
+      if (rec) logins += rec.sessions;
+    });
+  }
+
+  let totalHours = 0;
+  if (userName) {
+    const r = DATA.users_yearly.find(x => x.name === userName);
+    if (r) {
+      const years = new Set(months.map(monthYear));
+      if (years.has(2024)) totalHours += durationToHours(r.y2024_duration);
+      if (years.has(2025)) totalHours += durationToHours(r.y2025_duration);
+      if (years.has(2026)) totalHours += durationToHours(r.y2026_duration);
+    }
+  } else {
+    // Sum across all users for the years selected
+    const years = new Set(months.map(monthYear));
+    DATA.users_yearly.forEach(r => {
+      if (years.has(2024)) totalHours += durationToHours(r.y2024_duration);
+      if (years.has(2025)) totalHours += durationToHours(r.y2025_duration);
+      if (years.has(2026)) totalHours += durationToHours(r.y2026_duration);
+    });
+  }
+
+  // Active users = number of distinct users with itin>0 across filter
+  let activeUsers = 0;
+  if (userName) {
+    activeUsers = 1;
+  } else {
+    const counted = new Set();
+    DATA.itineraries_per_user_monthly.forEach(r => {
+      const has = months.some(m => (r[m]||0) > 0);
+      if (has) counted.add(r.name);
+    });
+    activeUsers = counted.size;
+  }
+
+  document.getElementById('kpi-itineraries').textContent = fmt(itins);
+  document.getElementById('kpi-users').textContent = fmt(activeUsers);
+  document.getElementById('kpi-logins').textContent = fmt(logins);
+  document.getElementById('kpi-time').textContent = Math.round(totalHours).toLocaleString('en-US') + 'h';
+
+  // Filter context note
+  let meta = 'Selection: ';
+  meta += state.year === 'all' ? 'all years' : state.year;
+  if (userName) meta += ' · ' + userName;
+  document.getElementById('kpi-itineraries-meta').textContent = meta;
+}
+
+// ====== RECENT USERS ======
+// ====== TOP PROFILES ======
+function renderTopProfiles() {
+  const list = document.getElementById('top-profiles-list');
+  list.innerHTML = '';
+  const top = [...DATA.profiles].sort((a,b) => b.itineraryUsage - a.itineraryUsage).slice(0, 10);
+  top.forEach((p, i) => {
+    const div = document.createElement('div');
+    div.className = 'top-item';
+    div.innerHTML = `
+      <div class="top-rank">${i+1}</div>
+      <div class="top-info">
+        <span class="top-name">${p.profileName}</span>
+        <span class="top-sub">${p.profileCategory} · ${p.destination||'—'} · ${p.country||'—'}</span>
+      </div>
+      <div class="top-value">${fmt(p.itineraryUsage)}</div>
+    `;
+    list.appendChild(div);
+  });
+}
+
+// ====== TOP DESTINATIONS ======
+function renderTopDestinations() {
+  const list = document.getElementById('top-destinations-list');
+  list.innerHTML = '';
+  const totalRow = DATA.destinations.find(d => d.destination === 'Total');
+  const top = DATA.destinations
+    .filter(d => d.destination && d.destination !== 'Total')
+    .sort((a,b) => b.total - a.total)
+    .slice(0, 10);
+
+  top.forEach((d, i) => {
+    const div = document.createElement('div');
+    div.className = 'top-item';
+    div.innerHTML = `
+      <div class="top-rank">${i+1}</div>
+      <div class="top-info">
+        <span class="top-name">${d.destination}</span>
+        <span class="top-sub">'24: ${fmt(d.y2024)} · '25: ${fmt(d.y2025)} · '26: ${fmt(d.y2026)}</span>
+      </div>
+      <div class="top-value">${fmt(d.total)}</div>
+    `;
+    list.appendChild(div);
+  });
+
+  const totalBox = document.getElementById('top-destinations-total');
+  if (totalBox && totalRow) {
+    totalBox.innerHTML = `<span>Total destinations usage</span><span>${fmt(totalRow.total)}</span>`;
+    totalBox.classList.add('visible');
+  }
+}
+
+
+// ====== USERS TABLE ======
+let userSortKey = 'total';
+let userSortDir = -1;
+function renderUsersTable() {
+  const tbody = document.getElementById('users-tbody');
+  tbody.innerHTML = '';
+  const q = document.getElementById('user-search').value.toLowerCase();
+
+  let rows = DATA.users_yearly.map(r => {
+    const itinsRow = DATA.itineraries_per_user_year.find(x => x.name === r.name);
+    return { ...r, total: itinsRow ? itinsRow.total : 0 };
+  }).filter(r => r.name.toLowerCase().includes(q));
+
+  const totalRow = rows.find(r => r.name === 'Total');
+  rows = rows.filter(r => r.name !== 'Total' && !String(r.name).startsWith('Filtros aplicados'));
+
+  rows.sort((a,b) => {
+    const va = a[userSortKey], vb = b[userSortKey];
+    if (typeof va === 'string') return userSortDir * va.localeCompare(vb);
+    return userSortDir * ((va||0) - (vb||0));
+  });
+
+  rows.slice(0, 200).forEach(r => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><strong>${r.name}</strong></td>
+      <td>${fmt(r.y2024_itins)}</td>
+      <td>${fmt(r.y2024_sessions)}</td>
+      <td>${fmt(r.y2025_itins)}</td>
+      <td>${fmt(r.y2025_sessions)}</td>
+      <td>${fmt(r.y2026_itins)}</td>
+      <td>${fmt(r.y2026_sessions)}</td>
+      <td><strong>${fmt(r.total)}</strong></td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  if (totalRow) {
+    const tr = document.createElement('tr');
+    tr.className = 'total-row';
+    tr.innerHTML = `
+      <td><strong>${totalRow.name}</strong></td>
+      <td>${fmt(totalRow.y2024_itins)}</td>
+      <td>${fmt(totalRow.y2024_sessions)}</td>
+      <td>${fmt(totalRow.y2025_itins)}</td>
+      <td>${fmt(totalRow.y2025_sessions)}</td>
+      <td>${fmt(totalRow.y2026_itins)}</td>
+      <td>${fmt(totalRow.y2026_sessions)}</td>
+      <td><strong>${fmt(totalRow.total)}</strong></td>
+    `;
+    tbody.appendChild(tr);
+  }
+}
+
+
+document.querySelectorAll('#users-table thead th').forEach(th => {
+  th.addEventListener('click', () => {
+    const k = th.dataset.sort;
+    if (userSortKey === k) userSortDir = -userSortDir;
+    else { userSortKey = k; userSortDir = -1; }
+    document.querySelectorAll('#users-table thead th .sort-ind').forEach(s => s.textContent = '');
+    th.querySelector('.sort-ind').textContent = userSortDir < 0 ? '▼' : '▲';
+    renderUsersTable();
+  });
+});
+document.getElementById('user-search').addEventListener('input', renderUsersTable);
+
+// ====== PROFILES TABLE ======
+let profSortKey = 'itineraryUsage';
+let profSortDir = -1;
+let profPage = 0;
+const PROF_PAGE_SIZE = 50;
+
+function filteredProfiles() {
+  const q = document.getElementById('profile-search').value.toLowerCase();
+  const cat = profCatSel.value;
+  const country = profCountrySel.value;
+  const status = document.getElementById('profile-status').value;
+  const tier = profTierSel.value;
+  return DATA.profiles.filter(p => {
+    if (q && !(p.profileName||'').toLowerCase().includes(q)) return false;
+    if (cat !== 'all' && p.profileCategory !== cat) return false;
+    if (country !== 'all' && p.country !== country) return false;
+    if (status !== 'all' && p.status !== status) return false;
+    if (tier !== 'all' && p.profileTier !== tier) return false;
+    return true;
+  });
+}
+
+function renderProfilesTable() {
+  const tbody = document.getElementById('profiles-tbody');
+  tbody.innerHTML = '';
+  let rows = filteredProfiles();
+  rows.sort((a,b) => {
+    const va = a[profSortKey], vb = b[profSortKey];
+    if (typeof va === 'string') return profSortDir * (va||'').localeCompare(vb||'');
+    return profSortDir * ((va||0) - (vb||0));
+  });
+  const total = rows.length;
+  const totalPages = Math.max(1, Math.ceil(total / PROF_PAGE_SIZE));
+  if (profPage >= totalPages) profPage = totalPages - 1;
+  const start = profPage * PROF_PAGE_SIZE;
+  rows.slice(start, start + PROF_PAGE_SIZE).forEach(p => {
+    const statusTag = p.status === 'Active' ? 'tag-green' : p.status === 'Disabled' ? 'tag-amber' : 'tag-grey';
+    const tierTag = p.profileTier === 'Professional' ? 'tag-blue' : 'tag-grey';
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><strong>${p.profileName}</strong></td>
+      <td>${p.profileCategory || '—'}</td>
+      <td>${p.destination || '—'}</td>
+      <td>${p.country || '—'}</td>
+      <td><span class="tag ${statusTag}">${p.status}</span></td>
+      <td><span class="tag ${tierTag}">${p.profileTier || '—'}</span></td>
+      <td>${fmt(p.imageCount)}</td>
+      <td>${p.contentRating}</td>
+      <td><strong>${fmt(p.itineraryUsage)}</strong></td>
+    `;
+    tbody.appendChild(tr);
+  });
+  document.getElementById('profiles-count').textContent = `Showing ${Math.min(start+1, total)}–${Math.min(start+PROF_PAGE_SIZE, total)} of ${fmt(total)} profiles`;
+  document.getElementById('page-info').textContent = `Page ${profPage+1} of ${totalPages}`;
+  document.getElementById('prev-page').disabled = profPage === 0;
+  document.getElementById('next-page').disabled = profPage >= totalPages - 1;
+  document.getElementById('profiles-summary').textContent = `${fmt(DATA.profiles.length)} profiles used in itineraries`;
+}
+
+document.querySelectorAll('#profiles-table thead th').forEach(th => {
+  th.addEventListener('click', () => {
+    const k = th.dataset.sort;
+    if (profSortKey === k) profSortDir = -profSortDir;
+    else { profSortKey = k; profSortDir = -1; }
+    document.querySelectorAll('#profiles-table thead th .sort-ind').forEach(s => s.textContent = '');
+    th.querySelector('.sort-ind').textContent = profSortDir < 0 ? '▼' : '▲';
+    profPage = 0;
+    renderProfilesTable();
+  });
+});
+['profile-search','profile-cat','profile-country','profile-status','profile-tier'].forEach(id => {
+  document.getElementById(id).addEventListener('input', () => { profPage = 0; renderProfilesTable(); });
+  document.getElementById(id).addEventListener('change', () => { profPage = 0; renderProfilesTable(); });
+});
+document.getElementById('prev-page').addEventListener('click', () => { profPage--; renderProfilesTable(); });
+document.getElementById('next-page').addEventListener('click', () => { profPage++; renderProfilesTable(); });
+
+// ====== REFRESH ALL ======
+function refresh() {
+  readFilters();
+  refreshKPIs();
+  renderYoYItineraries();
+  renderYoYLogins();
+  renderItinsMonthly();
+  renderLoginsMonthly();
+  renderTopUsers();
+}
+
+// Async init
+document.addEventListener('DOMContentLoaded', async function() {
+  try {
+    const d = await loadAllData();
+    Object.assign(DATA, d);
+  } catch(e) {
+    console.warn('Supabase load failed:', e);
+  }
 
   // Bind filter changes
   ['filter-year','filter-username','filter-from','filter-to'].forEach(id => {
@@ -1044,6 +1586,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   renderUsersTable();
   renderProfilesTable();
 });
+
+// initial sort indicators
+
+// initial sort indicators
+// dashboard repaired version
 
 </script>
 </body>
